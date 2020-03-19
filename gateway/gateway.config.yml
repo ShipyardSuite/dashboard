@@ -4,15 +4,20 @@ admin:
     port: 9876
     host: localhost
 apiEndpoints:
-    template:
+    homepage:
         host: localhost
-        paths: [ '/template/*', '/template/api/*']
+        paths: [ '/homepage/*', '/homepage/api/*']
+    dashboard:
+        host: localhost
+        paths: [ '/dashboard/*', '/dashboard/api/*']
     notfound:
         host: localhost
         paths: [ '/notfound/*' ]
 serviceEndpoints:
-    template:
-        url: 'http://template:3000'
+    homepage:
+        url: 'http://homepage:5000'
+    dashboard:
+        url: 'http://dashboard:4000'
     notfound:
         url: 'http://notfound:3003'
 policies:
@@ -25,13 +30,21 @@ policies:
     - proxy
     - rate-limit
 pipelines:
-    template:
+    homepage:
         apiEndpoints:
-            - template
+            - homepage
         policies:
             - proxy:
                 - action:
-                    serviceEndpoint: template 
+                    serviceEndpoint: homepage 
+                    changeOrigin: true
+    dashboard:
+        apiEndpoints:
+            - dashboard
+        policies:
+            - proxy:
+                - action:
+                    serviceEndpoint: dashboard 
                     changeOrigin: true
     notfound:
         apiEndpoints:

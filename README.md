@@ -1,5 +1,5 @@
-# microservice-template
-Microservice Template for Shipyard GCDN
+# dashboard
+Microservice for Project Dashboard of Shipyard GCDN
 
 ---
 

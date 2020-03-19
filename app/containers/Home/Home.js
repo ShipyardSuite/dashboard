@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react';
 
-import { ExampleComponent } from './../../components/';
-
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -12,11 +10,7 @@ class Home extends Component {
 	}
 
 	render() {
-		return (
-			<div>
-				<ExampleComponent url="/template/api/test" />
-			</div>
-		);
+		return <div>Dashboard...</div>;
 	}
 }
 
