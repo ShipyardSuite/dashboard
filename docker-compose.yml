@@ -15,6 +15,7 @@ services:
             - ./gateway/gateway.config.yml:/usr/src/app/config/gateway.config.yml
         depends_on:
             - notfound
+            - auth
             - homepage
             - dashboard
         networks:
@@ -65,7 +66,7 @@ services:
 
     auth:
         image: shipyardsuite/auth:develop
-        container_name: dashboard
+        container_name: auth
         expose:
             - "3002"
         environment:

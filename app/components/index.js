@@ -1,4 +1,5 @@
-import { ExampleComponent } from './ExampleComponent';
+import { LoadingSpinner } from './LoadingSpinner';
+import { Layout } from './Layout';
 
-export default { ExampleComponent };
-export { ExampleComponent };
+export default { LoadingSpinner, Layout };
+export { LoadingSpinner, Layout };
