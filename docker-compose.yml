@@ -42,8 +42,8 @@ services:
     notfound:
         image: shipyardsuite/notfound:develop
         container_name: notfound
-        ports:
-            - "3003:3003"
+        expose:
+            - "3003"
         environment:
             SERVICE_PORT: 3003
         networks: 
@@ -52,22 +52,34 @@ services:
     homepage:
         image: shipyardsuite/homepage:develop
         container_name: homepage
-        ports:
-            - "5000:5000"
+        expose:
+            - "3001"
         depends_on:
             - mongo 
         environment:
-            SERVICE_PORT: 5000
+            SERVICE_PORT: 3001
             SERVICE_NAME: homepage
             DATABASE_URL: ${DATABASE_URL}
+        networks: 
+            - gateway
+
+    auth:
+        image: shipyardsuite/auth:develop
+        container_name: dashboard
+        expose:
+            - "3002"
+        environment:
+            SERVICE_NAME: auth
+            DATABASE_URL: ${DATABASE_URL}
+            SERVICE_PORT: 3002
         networks: 
             - gateway
 
     dashboard:
         build: ./
         container_name: ${SERVICE_NAME}
-        ports:
-            - "${SERVICE_PORT}:${SERVICE_PORT}"
+        expose:
+            - "${SERVICE_PORT}"
         volumes:
             - ./:/usr/src/app
         working_dir: /usr/src/app

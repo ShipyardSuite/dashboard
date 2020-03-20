@@ -4,22 +4,27 @@ admin:
     port: 9876
     host: localhost
 apiEndpoints:
+    auth:
+        host: localhost
+        paths: [ '/auth/*', '/auth/api/*']
+    notfound:
+        host: localhost
+        paths: [ '/notfound/*' ]
     homepage:
         host: localhost
         paths: [ '/homepage/*', '/homepage/api/*']
     dashboard:
         host: localhost
         paths: [ '/dashboard/*', '/dashboard/api/*']
-    notfound:
-        host: localhost
-        paths: [ '/notfound/*' ]
 serviceEndpoints:
-    homepage:
-        url: 'http://homepage:5000'
-    dashboard:
-        url: 'http://dashboard:4000'
+    auth:
+        url: 'http://auth:3002'
     notfound:
         url: 'http://notfound:3003'
+    homepage:
+        url: 'http://homepage:3001'
+    dashboard:
+        url: 'http://dashboard:3004'
 policies:
     - basic-auth
     - cors
@@ -30,6 +35,22 @@ policies:
     - proxy
     - rate-limit
 pipelines:
+    auth:
+        apiEndpoints:
+            - auth
+        policies:
+            - proxy:
+                - action:
+                    serviceEndpoint: auth 
+                    changeOrigin: true
+    notfound:
+        apiEndpoints:
+            - notfound
+        policies:
+            - proxy:
+                - action:
+                    serviceEndpoint: notfound 
+                    changeOrigin: true
     homepage:
         apiEndpoints:
             - homepage
@@ -45,12 +66,4 @@ pipelines:
             - proxy:
                 - action:
                     serviceEndpoint: dashboard 
-                    changeOrigin: true
-    notfound:
-        apiEndpoints:
-            - notfound
-        policies:
-            - proxy:
-                - action:
-                    serviceEndpoint: notfound 
                     changeOrigin: true
