@@ -8,15 +8,28 @@ export default class Layout extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {};
+		this.state = {
+			loggedIn: false,
+			token: [],
+			user: [],
+			projects: []
+		};
 	}
 
-	logout() {
+	componentDidMount() {
 		const obj = getFromStorage('botany-bay');
 
 		if (obj && obj.token) {
-			const { token } = obj;
+			this.setState({ token: obj.token }, () => {
+				this.getUser();
+			});
+		}
+	}
 
+	logout() {
+		const { token } = this.state;
+
+		if (token) {
 			fetch('/auth/api/logout?id=' + token).then((res) => res.json()).then((json) => {
 				if (json.success) {
 					localStorage.removeItem('botany-bay');
@@ -26,6 +39,36 @@ export default class Layout extends Component {
 			});
 		}
 	}
+
+	getUser() {
+		const { token } = this.state;
+
+		if (token) {
+			fetch('/user/api/?id=' + token).then((res) => res.json()).then((json) => {
+				if (json.success) {
+					this.setState(
+						{
+							loggedIn: true,
+							user: json.data.user
+						},
+						() => {
+							this.getUserProjects();
+						}
+					);
+				}
+			});
+		} else {
+			this.setState({
+				loggedIn: false
+			});
+		}
+	}
+
+	/**
+ 	* @todo Method should get a list of all user projects
+ 	* @body Project microservice needs to be implemented and connected to this.
+ 	*/
+	getUserProjects() {}
 
 	handleItemClick(name) {
 		this.setState({ activeItem: name });
@@ -39,7 +82,7 @@ export default class Layout extends Component {
 				<LoadingSpinner isLoading={isLoading} unmountOnHide />
 				{!isLoading && (
 					<Container fluid>
-						<Button onClick={this.logout.bind(this)}>Logout</Button>
+						<Button onClick={this.logout.bind(this)}>Logout User</Button>
 						<div>{this.props.children}</div>
 					</Container>
 				)}

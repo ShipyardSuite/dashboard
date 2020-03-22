@@ -196,6 +196,104 @@ var App = function (_Component) {
 exports.default = App;
 });
 
+require.register("components/ExampleComponent/ExampleComponent.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ExampleComponent = function (_Component) {
+	_inherits(ExampleComponent, _Component);
+
+	function ExampleComponent(props) {
+		_classCallCheck(this, ExampleComponent);
+
+		var _this = _possibleConstructorReturn(this, (ExampleComponent.__proto__ || Object.getPrototypeOf(ExampleComponent)).call(this, props));
+
+		_this.state = {
+			status: false
+		};
+		return _this;
+	}
+
+	_createClass(ExampleComponent, [{
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			var url = this.props.url;
+
+
+			fetch(url).then(function (res) {
+				return res.json();
+			}).then(function (json) {
+				_this2.setState({
+					status: json.success
+				});
+			});
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			var status = this.state.status;
+
+
+			return _react2.default.createElement(
+				"span",
+				{ className: "ExampleComponent" },
+				"Database connection:",
+				status ? _react2.default.createElement(
+					"span",
+					{ className: "success" },
+					"Successful"
+				) : _react2.default.createElement(
+					"span",
+					{ className: "error" },
+					"failed"
+				)
+			);
+		}
+	}]);
+
+	return ExampleComponent;
+}(_react.Component);
+
+exports.default = ExampleComponent;
+});
+
+;require.register("components/ExampleComponent/index.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ExampleComponent = undefined;
+
+var _ExampleComponent = require('./ExampleComponent');
+
+var _ExampleComponent2 = _interopRequireDefault(_ExampleComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = { ExampleComponent: _ExampleComponent2.default };
+exports.ExampleComponent = _ExampleComponent2.default;
+});
+
 require.register("components/Layout/Layout.js", function(exports, require, module) {
 'use strict';
 
@@ -231,19 +329,35 @@ var Layout = function (_Component) {
 
 		var _this = _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this, props));
 
-		_this.state = {};
+		_this.state = {
+			loggedIn: false,
+			token: [],
+			user: [],
+			projects: []
+		};
 		return _this;
 	}
 
 	_createClass(Layout, [{
-		key: 'logout',
-		value: function logout() {
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
 			var obj = (0, _storage.getFromStorage)('botany-bay');
 
 			if (obj && obj.token) {
-				var token = obj.token;
+				this.setState({ token: obj.token }, function () {
+					_this2.getUser();
+				});
+			}
+		}
+	}, {
+		key: 'logout',
+		value: function logout() {
+			var token = this.state.token;
 
 
+			if (token) {
 				fetch('/auth/api/logout?id=' + token).then(function (res) {
 					return res.json();
 				}).then(function (json) {
@@ -255,6 +369,42 @@ var Layout = function (_Component) {
 				});
 			}
 		}
+	}, {
+		key: 'getUser',
+		value: function getUser() {
+			var _this3 = this;
+
+			var token = this.state.token;
+
+
+			if (token) {
+				fetch('/user/api/?id=' + token).then(function (res) {
+					return res.json();
+				}).then(function (json) {
+					if (json.success) {
+						_this3.setState({
+							loggedIn: true,
+							user: json.data.user
+						}, function () {
+							_this3.getUserProjects();
+						});
+					}
+				});
+			} else {
+				this.setState({
+					loggedIn: false
+				});
+			}
+		}
+
+		/**
+  	* @todo Method should get a list of all user projects
+  	* @body Project microservice needs to be implemented and connected to this.
+  	*/
+
+	}, {
+		key: 'getUserProjects',
+		value: function getUserProjects() {}
 	}, {
 		key: 'handleItemClick',
 		value: function handleItemClick(name) {
@@ -276,7 +426,7 @@ var Layout = function (_Component) {
 					_react2.default.createElement(
 						_semanticUiReact.Button,
 						{ onClick: this.logout.bind(this) },
-						'Logout'
+						'Logout User'
 					),
 					_react2.default.createElement(
 						'div',
@@ -469,7 +619,6 @@ var Home = function (_Component) {
 					return res.json();
 				}).then(function (json) {
 					if (json.success) {
-						console.log(json);
 						_this2.setState({
 							token: token,
 							isLoading: false

@@ -31,7 +31,6 @@ class Home extends Component {
 
 			fetch('/auth/api/token?id=' + token).then((res) => res.json()).then((json) => {
 				if (json.success) {
-					console.log(json);
 					this.setState({
 						token,
 						isLoading: false
