@@ -44,7 +44,7 @@ export default class Layout extends Component {
 		const { token } = this.state;
 
 		if (token) {
-			fetch('/user/api/?id=' + token).then((res) => res.json()).then((json) => {
+			fetch('/user/api/id/' + token).then((res) => res.json()).then((json) => {
 				if (json.success) {
 					this.setState(
 						{
