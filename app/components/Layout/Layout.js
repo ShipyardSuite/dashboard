@@ -30,13 +30,15 @@ export default class Layout extends Component {
 		const { token } = this.state;
 
 		if (token) {
-			fetch('/auth/api/logout?id=' + token).then((res) => res.json()).then((json) => {
-				if (json.success) {
-					localStorage.removeItem('botany-bay');
+			fetch(`http://${window.location.host}/auth/api/logout?id=` + token)
+				.then((res) => res.json())
+				.then((json) => {
+					if (json.success) {
+						localStorage.removeItem('botany-bay');
 
-					window.location.replace('http://localhost:8080/auth/login');
-				}
-			});
+						window.location.replace(`http://${window.location.host}/auth/login`);
+					}
+				});
 		}
 	}
 
@@ -44,7 +46,7 @@ export default class Layout extends Component {
 		const { token } = this.state;
 
 		if (token) {
-			fetch('/user/api/id/' + token).then((res) => res.json()).then((json) => {
+			fetch(`http://${window.location.host}/user/api/id/` + token).then((res) => res.json()).then((json) => {
 				if (json.success) {
 					this.setState(
 						{

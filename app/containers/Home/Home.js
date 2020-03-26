@@ -23,25 +23,27 @@ class Home extends Component {
 
 		if (obj && obj.token !== '') {
 		} else {
-			window.location.replace('http://localhost:8080/auth/login');
+			window.location.replace(`http://${window.location.host}/auth/login`);
 		}
 
 		if (obj && obj.token) {
 			const { token } = obj;
 
-			fetch('/auth/api/token?id=' + token).then((res) => res.json()).then((json) => {
-				if (json.success) {
-					this.setState({
-						token,
-						isLoading: false
-					});
-				} else {
-					this.setState({
-						isLoading: false,
-						userData: []
-					});
-				}
-			});
+			fetch(`http://${window.location.host}/auth/api/token?id=` + token)
+				.then((res) => res.json())
+				.then((json) => {
+					if (json.success) {
+						this.setState({
+							token,
+							isLoading: false
+						});
+					} else {
+						this.setState({
+							isLoading: false,
+							userData: []
+						});
+					}
+				});
 		} else {
 			this.setState({
 				isLoading: false
