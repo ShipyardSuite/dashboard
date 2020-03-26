@@ -33,10 +33,15 @@ class Home extends Component {
 				.then((res) => res.json())
 				.then((json) => {
 					if (json.success) {
-						this.setState({
-							token,
-							isLoading: false
-						});
+						this.setState(
+							{
+								token,
+								isLoading: false
+							},
+							() => {
+								console.log(this.state.token);
+							}
+						);
 					} else {
 						this.setState({
 							isLoading: false,
