@@ -1,20 +1,21 @@
-module.exports = {
-	files: {
-		javascripts: {
-			joinTo: {
-				'vendor.js': /^(?!app)/,
-				'app.js': /^app/
+exports.files = {
+	javascripts: { joinTo: 'app.js' },
+	stylesheets: { joinTo: 'app.css' }
+};
+
+exports.plugins = {
+	babel: { presets: [ 'latest', 'react' ] },
+	uglify: {
+		mangle: false,
+		compress: {
+			global_defs: {
+				DEBUG: false
 			}
-		},
-		stylesheets: { joinTo: 'app.css' }
+		}
 	},
-	paths: {
-		public: `public/${process.env.SERVICE_NAME}`
+	cleancss: {
+		keepSpecialComments: 0,
+		removeEmpty: true
 	},
-	plugins: {
-		babel: {
-			presets: [ 'latest', 'react' ]
-		},
-		autoReload: { enabled: true }
-	}
+	autoReload: { enabled: true }
 };
