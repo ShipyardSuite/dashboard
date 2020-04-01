@@ -1,28 +1,14 @@
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/shipyardsuite/dashboard/develop?color=3cafe2&style=flat-square)
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/shipyardsuite/dashboard?color=3cafe2&sort=date&style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/shipyardsuite/dashboard?color=3cafe2&style=flat-square)
+![Maintenance](https://img.shields.io/maintenance/yes/2020?color=3cafe2&style=flat-square)
+![GitHub](https://img.shields.io/github/license/shipyardsuite/dashboard?color=3cafe2&style=flat-square)
+
 # dashboard
 
-Shipyard Microservice
-
----
-
-## Environment variables
-
-| Name                  | Type     | Default   | Description                       |
-| --------------------- | -------- | --------- | --------------------------------- |
-| **SERVICE_NAME:**     | `String` | dashboard | Microservice name                 |
-| **SERVICE_PORT:**     | `Number` | 3004      | Microservice port                 |
-| **DATABASE_URL:**     | `String` |           | Database url                      |
-| **NEWRELIC_LICENSE:** | `String` |           | NewRelic license token            |
-
-## API
-
-| Type | URL             | Body                                        | Query               | Response              | Description                                             |
-| ---- | --------------- | ------------------------------------------- | ------------------- | --------------------- | ------------------------------------------------------- |
-| GET  | `/api/status`   |                                             |                     | **online**: `boolean` | Testing service connection.                             |
-
-## Usage
-
-**LOCAL**: create a `.env` file, with the specified variables and run `docker-compose up -d --build`.
+Microservice for Project Dashboard of Shipyard GCDN
 
 ## License
 
 This project is released under the [Apache version 2](LICENSE) license.
+

@@ -1,24 +1,7 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import App from 'components/App';
 
-import App from './App';
-
-import { Home } from './containers';
-
-ReactDOM.render(
-	<Router>
-		<App>
-			<Switch>
-				<Route exact path="/dashboard/" component={Home} />
-				<Route
-					render={() => {
-						window.location.replace('http://localhost:8080/notfound/');
-						return null;
-					}}
-				/>
-			</Switch>
-		</App>
-	</Router>,
-	document.querySelector('#root')
-);
+document.addEventListener('DOMContentLoaded', () => {
+	ReactDOM.render(<App />, document.querySelector('#app'));
+});
