@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 
 /**
@@ -5,15 +7,13 @@ import React from 'react';
  * @class App
  */
 export default class App extends React.Component {
-	componentDidMount() {
-		document.title = 'Page Title';
-	}
+	componentDidMount() {}
 
 	/**
 	 * Renders the current react component.
 	 * @method render
 	 */
 	render() {
-		return <div>DASHBOARD</div>;
+		return <div>{this.props.children}</div>;
 	}
 }
