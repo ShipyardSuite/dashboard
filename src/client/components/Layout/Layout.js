@@ -13,7 +13,7 @@ import {
     Grid
 } from 'semantic-ui-react';
 
-//import './Layout.sass';
+import './Layout.sass';
 
 class Layout extends React.Component
 {
@@ -31,13 +31,13 @@ class Layout extends React.Component
     render() 
     {
         return (
-            <Container fluid>
+            <Container fluid className="Layout">
                 <Grid celled='internally'>
-                    <Grid.Row style={{ height: '100vh' }}>
-                        <Grid.Column width={3} style={{ padding: 0, background: '#1b1c1d' }}>
+                    <Grid.Row className="outline">
+                        <Grid.Column width={3} className="sidebar">
                             Sidebar...
                         </Grid.Column>
-                        <Grid.Column width={13} style={{ padding: 0 }}>
+                        <Grid.Column width={13} className="content">
                             {this.props.children}
                         </Grid.Column>
                     </Grid.Row>
@@ -53,3 +53,5 @@ Layout.propTypes = {
 };
 
 export default withRouter(Layout);
+
+
