@@ -53,5 +53,3 @@ Layout.propTypes = {
 };
 
 export default withRouter(Layout);
-
-
