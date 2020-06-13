@@ -12,10 +12,14 @@ import { LoadingSpinner } from './../';
 
 import { 
     Container,
+    Icon,
     Grid,
     Button,
     Header,
-    Image
+    Menu,
+    Image,
+    Segment,
+    Sidebar
 } from 'semantic-ui-react';
 
 import { getFromStorage, sidebarMenu } from './../../utils';
@@ -35,6 +39,7 @@ class Layout extends React.Component
             token: '',
             isLoading: true,
             activeMenu: 'overview',
+            sectionSelector: false
         };
 
         this.i18nManager = new i18nManager(this.state.language);
@@ -55,8 +60,7 @@ class Layout extends React.Component
                     if (json.success)
                     {
                         this.setState({
-                            token,
-                            isLoading: false
+                            token
                         }, () =>
                         {
                             this.getUser();
@@ -83,15 +87,13 @@ class Layout extends React.Component
     {
         fetch(`/user/api/token?token=${this.state.token}`).then((res) => res.json()).then((json) =>
         {
-            console.log(json);
-
             if (json.success)
             {
-                //this.setState({ user: json.data.user, isLoading: false }, () =>
-                //{
+                this.setState({ user: json.data.user, isLoading: false }, () =>
+                {
                     
                     //this.getProjects();
-                //});
+                });
             }
         });
     }
@@ -101,11 +103,16 @@ class Layout extends React.Component
         this.setState({ activeMenu: name });
     }
 
+    handleSectionSelector(state)
+    {
+        this.setState({ sectionSelector: state });
+    }
+
     render()
     {
-        const { isLoading, activeMenu, menuItems, user } = this.state;
+        const { isLoading, activeMenu, menuItems, user, sectionSelector } = this.state;
 
-        console.log(user);
+        console.log(sectionSelector);
 
         return (
             <div>
@@ -131,6 +138,74 @@ class Layout extends React.Component
                                     </Grid.Column>
                                     <Grid.Column width={13} className="content-area">
 
+                                        <Segment raised style={{ padding: 0, borderRadius: 0, margin: 0, boxShadow: 'none' }}>
+
+                                            <Sidebar.Pushable>
+                                                <Sidebar
+                                                    as={Menu}
+                                                    direction="left"
+                                                    animation="push"
+                                                    style={{ background: '#ffffff', boxShadow: 'none' }}
+                                                    fluid
+                                                    secondary
+                                                    onHide={() => this.handleSectionSelector.bind(this, false )}
+                                                    visible={sectionSelector}
+                                                >
+                                                    <Menu.Menu position='right'>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='home'/>
+                                                            Project
+                                                        </Menu.Item>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='chart line'/>
+                                                            Statistics
+                                                        </Menu.Item>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='box'/>
+                                                            Assets
+                                                        </Menu.Item>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='trophy'/>
+                                                            Achievements
+                                                        </Menu.Item>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='gamepad'/>
+                                                            Messaging
+                                                        </Menu.Item>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='language'/>
+                                                            Translations
+                                                        </Menu.Item>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='currency'/>
+                                                            Currencies
+                                                        </Menu.Item>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='gamepad'/>
+                                                            Game Server
+                                                        </Menu.Item>
+                                                        <Menu.Item>
+                                                            <Button icon="cancel" circular onClick={this.handleSectionSelector.bind(this, false)}></Button>
+                                                        </Menu.Item>
+                                                    </Menu.Menu>
+                                                </Sidebar>
+                                                <Sidebar.Pusher>
+                                                    <Segment basic >
+                                                        <Grid >
+                                                            <Grid.Row>
+                                                                <Grid.Column width={8}>
+                                                                    <Header as="h4">Section Header</Header>
+                                                                </Grid.Column>
+                                                                <Grid.Column width={8}>                                            
+                                                                    <Button icon="th" circular floated="right" onClick={this.handleSectionSelector.bind(this, true)}></Button>
+                                                                </Grid.Column>
+                                                            </Grid.Row>
+                                                        </Grid>                                        
+                                                    </Segment>
+                                                </Sidebar.Pusher>
+                                            </Sidebar.Pushable>
+                                        </Segment>
+
                                         {this.props.children}
 
                                     </Grid.Column>
@@ -149,3 +224,51 @@ Layout.propTypes = {
 };
 
 export default withRouter(Layout);
+
+/*
+<Sidebar.Pushable>
+                                            <Sidebar
+                                                as={Menu}
+                                                direction="top"
+                                                animation='overlay'
+                                                icon='labeled'
+                                                secondary
+                                                onHide={() => this.handleSectionSelector.bind(this, false )}
+                                                visible={sectionSelector}
+                                            >
+                                                <Segment>
+                                                    <Menu.Menu position='right'>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='home' />
+                                                            Home
+                                                        </Menu.Item>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='gamepad' />
+                                                            Games
+                                                        </Menu.Item>
+                                                        <Menu.Item as='a'>
+                                                            <Icon name='camera' />
+                                                            Channels
+                                                        </Menu.Item>
+                                                    </Menu.Menu>
+                                                </Segment>
+                                            </Sidebar>
+                                            <Sidebar.Pusher>
+                                                <Segment basic>
+
+                                                    {this.props.children}
+                                        
+                                                </Segment>
+                                            </Sidebar.Pusher>
+                                        </Sidebar.Pushable>
+*/
+
+
+/*
+                                                        
+                                                        {/* <Button.Group compact fluid basic> */
+                                                        /* <Button>Status</Button>
+                                                            <Button>Documentation</Button> */
+                                                            
+                                                        /* </Button.Group> */
+                                                        
