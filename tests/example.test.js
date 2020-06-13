@@ -8,9 +8,9 @@ describe('Example', function ()
 {
     describe('exampleFunction()', function () 
     {
-        it('output should equal "auth"', function () 
+        it('output should equal "dashboard"', function () 
         {
-            expect(exampleFunction()).to.equal('auth');
+            expect(exampleFunction()).to.equal('dashboard');
         });
     });
 });
