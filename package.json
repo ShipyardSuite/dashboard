@@ -60,7 +60,7 @@
 		"eslint-plugin-react-hooks": "2.5.1",
 		"html-webpack-plugin": "4.3.0",
 		"nodemon": "^2.0.2",
-		"mocha": "7.1.2",
+		"mocha": "10.2.0",
 		"chai": "4.2.0",
 		"nyc": "15.0.1",
 		"jsdoc": "3.6.4",
